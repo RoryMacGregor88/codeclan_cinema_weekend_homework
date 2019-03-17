@@ -49,7 +49,7 @@ class Film
   end
 
   def find_customers_by_id()
-    sql = 'SELECT name FROM customers
+    sql = 'SELECT * FROM customers
           INNER JOIN tickets
           ON customers.id = tickets.customer_id
           INNER JOIN films
@@ -57,7 +57,11 @@ class Film
           WHERE films.title = $1'
     values = [@title]
     result = SqlRunner.run(sql, values)
-    return result.to_a
+    return Customer.map_items(result)
+  end
+
+  def sell_ticket()
+    
   end
 
 end

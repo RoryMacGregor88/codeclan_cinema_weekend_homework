@@ -19,9 +19,11 @@ customer4.save()
 customer5.save()
 
 film1 = Film.new( {'title' => 'Generations', 'price' => '10'} )
-film2 = Film.new( {'title' => 'Wrath of Khan', 'price' => '20'} )
+film2 = Film.new( {'title' => 'Wrath of Khan', 'price' => '30'} )
+film3 = Film.new( {'title' => 'In Search of Spock', 'price' => '20'} )
 film1.save()
 film2.save()
+film3.save()
 
 ticket1 = Ticket.new( {'customer_id' => customer1.id, 'film_id' => film1.id} )
 ticket2 = Ticket.new( {'customer_id' => customer2.id, 'film_id' => film1.id} )
@@ -47,8 +49,7 @@ ticket6.save()
 # ticket1.update()
 
 # film1.find_customers_by_id()
-#
 # customer5.find_booked_films()
 
-binding.pry
-nil
+# binding.pry
+# nil

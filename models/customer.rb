@@ -11,6 +11,7 @@ class Customer
     @name = options['name']
     @funds = options['funds']
     @id = options['id'].to_i if options['id']
+    @films_booked = []
     @tickets_bought = 0
   end
 
@@ -49,7 +50,7 @@ class Customer
   end
 
   def find_booked_films()
-    sql = 'SELECT title FROM films
+    sql = 'SELECT * FROM films
           INNER JOIN tickets
           ON tickets.film_id = films.id
           INNER JOIN customers
@@ -57,7 +58,26 @@ class Customer
           WHERE customers.name = $1'
     values = [@name]
     result = SqlRunner.run(sql, values)
-    return result.to_a
+    return Film.map_items(result)
+    # returned film object has a new id? Different from booked film?
   end
 
+  def buy_tickets(array_of_films)
+    array_of_films.each { |film| @funds -= film.price }
+    @tickets_bought += array_of_films.length
+  end
+
+  def buy_tickets(array_of_films)
+    array_of_films.each do |film|
+      @funds -= film.price
+      @films_booked << film
+      sql = 'UPDATE screenings SET (capacity) -= 1 WHERE id = $1'
+      values = [film.id]
+      SqlRunner.run(sql, values)
+    end
+  end
+
+  def check_tickets_bought()
+    return @tickets_bought
+  end
 end
