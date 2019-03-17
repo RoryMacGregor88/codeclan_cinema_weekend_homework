@@ -60,8 +60,4 @@ class Film
     return Customer.map_items(result)
   end
 
-  def sell_ticket()
-
-  end
-
 end

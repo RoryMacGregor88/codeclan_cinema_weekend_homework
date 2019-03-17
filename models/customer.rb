@@ -63,22 +63,28 @@ class Customer
     # returned film object has a new id? Different from booked film?
   end
 
-  def buy_tickets(array_of_films)
-    array_of_films.each { |film| @funds -= film.price }
-    @tickets_bought += array_of_films.length
-  end
-
-  def buy_tickets(array_of_films, array_of_screenings)
-    array_of_screenings.each do |screening|
-      return "Sold out!" if screening.capacity = 0
+  def buy_tickets(film, screening)
+      return "Sold out!" if screening.capacity == 0
+      return "Insufficient funds!" if @funds < film.price
       screening.book_ticket()
-    end
-    array_of_films.each do |film|
       @funds -= film.price
       self.update()
       @films_booked << film
-    end
+      @tickets_bought += 1
   end
+
+  # def buy_tickets(array_of_films, array_of_screenings)
+  #   array_of_screenings.each do |screening|
+  #     return "Sold out!" if screening.capacity == 0
+  #     screening.book_ticket()
+  #   end
+  #   array_of_films.each do |film|
+  #     @funds -= film.price
+  #     self.update()
+  #     @films_booked << film
+  #     @tickets_bought += 1
+  #   end
+  # end
 
   def check_number_of_tickets_bought()
     return @tickets_bought
@@ -87,4 +93,5 @@ class Customer
   def check_films_booked()
     return @films_booked
   end
+  
 end
