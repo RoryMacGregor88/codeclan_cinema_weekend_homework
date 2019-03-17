@@ -1,7 +1,7 @@
-require('pry-byebug')
 require_relative('../db/sql_runner.rb')
 require_relative('./ticket.rb')
 require_relative('./customer.rb')
+require_relative('./screening.rb')
 
 class Film
 
@@ -61,7 +61,7 @@ class Film
   end
 
   def sell_ticket()
-    
+
   end
 
 end

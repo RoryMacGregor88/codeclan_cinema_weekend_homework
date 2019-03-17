@@ -1,6 +1,7 @@
 require_relative('../db/sql_runner.rb')
 require_relative('./ticket.rb')
 require_relative('./film.rb')
+require_relative('./screening.rb')
 
 class Customer
 
@@ -67,9 +68,12 @@ class Customer
     @tickets_bought += array_of_films.length
   end
 
-  def buy_tickets(array_of_films)
+  def buy_tickets(array_of_films) [film1, film2]
     array_of_films.each do |film|
       @funds -= film.price
+      sql = 'UPDATE customers SET (funds) -= $1 WHERE id = $2'
+      values = [film.price, @id]
+      SqlRunner.run(sql, values)
       @films_booked << film
       sql = 'UPDATE screenings SET (capacity) -= 1 WHERE id = $1'
       values = [film.id]
@@ -77,7 +81,11 @@ class Customer
     end
   end
 
-  def check_tickets_bought()
+  def check_number_of_tickets_bought()
     return @tickets_bought
+  end
+
+  def check_films_booked()
+    return @films_booked
   end
 end
