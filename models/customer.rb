@@ -6,11 +6,11 @@ require_relative('./screening.rb')
 class Customer
 
   attr_accessor :name, :funds
-  attr_reader :id
+  attr_reader :id, :films_booked
 
   def initialize(options)
     @name = options['name']
-    @funds = options['funds']
+    @funds = options['funds'].to_i
     @id = options['id'].to_i if options['id']
     @films_booked = []
     @tickets_bought = 0
@@ -68,16 +68,15 @@ class Customer
     @tickets_bought += array_of_films.length
   end
 
-  def buy_tickets(array_of_films) [film1, film2]
+  def buy_tickets(array_of_films, array_of_screenings)
+    array_of_screenings.each do |screening|
+      return "Sold out!" if screening.capacity = 0
+      screening.book_ticket()
+    end
     array_of_films.each do |film|
       @funds -= film.price
-      sql = 'UPDATE customers SET (funds) -= $1 WHERE id = $2'
-      values = [film.price, @id]
-      SqlRunner.run(sql, values)
+      self.update()
       @films_booked << film
-      sql = 'UPDATE screenings SET (capacity) -= 1 WHERE id = $1'
-      values = [film.id]
-      SqlRunner.run(sql, values)
     end
   end
 
